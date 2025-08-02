@@ -63,3 +63,13 @@ Add rate limiting to prevent abuse.
 Write more comprehensive test coverage.
 
 Use environment-based configuration for dev/prod.
+Must explain:
+
+Issues in original code
+
+Changes made
+
+Assumptions/trade-offs
+
+What I’d do with more time
+

@@ -63,3 +63,11 @@ Task 2
  GET /api/stats/<short_code> returns stats
 
  pytest passes
+
+Overview of both tasks
+
+Setup instructions (venv, install, run) for Task 1 and Task 2
+
+API endpoint list for each task
+
+Testing instructions (e.g., Thunder Client, curl, pytest)
