@@ -1,75 +1,81 @@
-CHANGES.md – Task 1: User API Refactoring
-1️⃣ Major Issues Identified in Original Code
-Poor Project Structure – All logic in one file; no separation between routes, models, and database.
+1️ Major Issues Identified in Original Code
+Poor Project Structure – All routes, DB logic, and validations mixed together in one file.
 
-No Input Validation – API accepted any data without checking required fields or formats.
+No Input Validation – Endpoints accepted any data without verifying required fields or formats.
 
-Security Vulnerabilities – Passwords stored in plain text; no hashing.
+Security Vulnerabilities – Passwords stored in plain text.
 
-Hard-coded Configuration – Database URI and sensitive info were hard-coded.
+Hardcoded Configuration – Database URI and other settings hardcoded inside code.
 
-Improper HTTP Status Codes – Success and error responses often returned wrong codes.
+Improper HTTP Status Codes – Used incorrect codes (e.g., returning 200 for errors).
 
-No Error Handling – Missing try/except blocks or graceful handling of database errors.
+No Error Handling – No try/except blocks for DB or request parsing errors.
 
-No Tests – No automated tests to verify core functionality.
+No Tests – No automated test coverage for API behavior.
+
+
 
 2️⃣ Changes Made
-Reorganized into Package Structure
+Reorganized Project Structure
 
-app/ package with __init__.py, routes.py, models.py, services.py, database.py, and validators.py for clear separation of concerns.
+Added app/ package containing:
 
-Added Marshmallow Validation
+__init__.py – Flask app creation and blueprint registration
 
-Created UserSchema to validate input data for POST and PUT requests.
+routes.py – All API routes
+
+services.py – Business logic separated from route handlers
+
+database.py – Database initialization and SQLAlchemy setup
+
+validators.py – Marshmallow schemas for request validation
+
+models.py – SQLAlchemy models for User table
+
+Added Validation
+
+Used Marshmallow to validate inputs for user creation and update
 
 Implemented Password Hashing
 
-Using werkzeug.security.generate_password_hash and check_password_hash.
+Used werkzeug.security to hash passwords and verify on login
 
 Improved Config Management
 
-Removed hard-coded DB URI; now using SQLite for demo purposes (easily switchable to PostgreSQL).
+Moved DB URI to a config variable (SQLite by default for local testing)
 
-HTTP Status Codes Fixed
+Correct HTTP Status Codes
 
-Used 201 Created for POST, 404 Not Found for missing resources, etc.
+201 Created for POST success
 
-Error Handling Added
+400 Bad Request for invalid input
 
-Checked for missing users and invalid credentials.
+404 Not Found for missing resources
 
-Basic Tests Added
+Added Error Handling
 
-pytest tests for health check and user creation.
+Checks for invalid IDs and missing records
+
+Added Basic Tests
+
+Added pytest tests for health check and create user
 
 3️⃣ Assumptions
-SQLite database is sufficient for local demo; PostgreSQL can be enabled by changing the URI.
+SQLite is sufficient for local development — PostgreSQL can be added easily by updating DB URI
 
-Password reset, JWT authentication, and role-based access are out of scope for this refactor.
+API authentication (JWT/session) is outside the scope of this refactor
 
 4️⃣ Trade-offs
-Chose SQLite over PostgreSQL for portability — avoids psycopg2 build issues and works out of the box.
+Chose SQLite over PostgreSQL for portability (avoids psycopg2 build issues)
 
-Did not implement full authentication (JWT/session) to keep the focus on refactoring.
+Did not implement pagination or advanced filtering to keep focus on refactor
+5️⃣ Future Improvements
+Add JWT-based authentication and role management
 
-5️⃣ What I Would Do With More Time
-Add JWT authentication and refresh tokens.
+Add pagination and sorting to /users endpoint
 
-Add pagination, filtering, and sorting to /users endpoint.
+Implement rate limiting to prevent abuse
 
-Add rate limiting to prevent abuse.
+Expand automated test coverage
 
-Write more comprehensive test coverage.
-
-Use environment-based configuration for dev/prod.
-Must explain:
-
-Issues in original code
-
-Changes made
-
-Assumptions/trade-offs
-
-What I’d do with more time
-
+Add CI/CD pipeline for automated deployment
